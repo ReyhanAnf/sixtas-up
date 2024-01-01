@@ -1,11 +1,12 @@
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 
-from rest_framework import generics, permissions, viewsets, renderers
+from rest_framework import generics, permissions, viewsets, mixins
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 
 from .serializers import UserSerializer
 from .permissions import PostPermission, AnswerPermission, ReplyPermission, ProfilePermission
@@ -39,6 +40,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
   
   
 class ProfileViewSet(viewsets.ModelViewSet):
+  authentication_classes = [SessionAuthentication, BasicAuthentication]
   queryset = Profile.objects.all()
   serializer_class = ProfileSerializer
   
@@ -46,12 +48,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """
     Instantiates and returns the list of permissions that this view requires.
     """
-    if self.action == 'update':
+    if self.action == 'update' or 'patch':
         permission_classes = [ProfilePermission]
+    elif self.action == 'delete':
+        permission_classes = [permissions.DjangoModelPermissions]
     else:
         permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     return [permission() for permission in permission_classes]
   
+
 
 class ProfileList(generics.ListAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -63,16 +68,20 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
   queryset = Profile.objects.all()
   serializer_class = ProfileSerializer
   
+  
+  
 class PostViewSet(viewsets.ModelViewSet):
-  permission_classes = [PostPermission]
+  permission_classes = [PostPermission, permissions.IsAuthenticatedOrReadOnly]
   queryset = Post.objects.all()
   serializer_class = PostSerializer
   
   
+  
 class AnswerViewSet(viewsets.ModelViewSet):
-  permission_classes = [AnswerPermission]
+  permission_classes = [AnswerPermission, permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
+  
   
 class ReplyViewSet(viewsets.ModelViewSet):
   permission_classes = [ReplyPermission]
