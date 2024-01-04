@@ -24,7 +24,7 @@ class Profile(models.Model):
     alamat = models.CharField(max_length=200, blank=True)
     angkatan = models.CharField(max_length=10, blank=True)
     kontak = models.CharField(max_length=10, blank=True)
-    ttl = models.DateField(blank=True)
+    ttl = models.DateField(blank=True, null=True)
     
     def __str__(self):
       return str(self.nis)

@@ -1,4 +1,5 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link'
 import Image from 'next/image';
 import { poppins } from '@/app/ui/fonts';
 import { Button } from './ui/button';
@@ -79,7 +80,15 @@ export default function Page() {
 function CheckLoginButton() {
   return (
     <Button className="mt-4 w-full">
-      Next <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      <Link
+        href={{
+          pathname: '/sign',
+          query: { name: 'sign' },
+        }}
+      >
+        Next <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      </Link>
+      
     </Button>
   );
 }
