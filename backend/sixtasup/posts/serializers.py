@@ -1,21 +1,39 @@
 from rest_framework import serializers
 from .models import Post, Answer, Reply
+from base.api.serializers import UserSerializer
+from django.contrib.auth.models import User
 
-class PostSerializer(serializers.ModelSerializer):
-  serializers.ReadOnlyField(source='user.username')
+
+class ReplySerializer(serializers.ModelSerializer):
+  user = UserSerializer()
   class Meta:
-    model = Post
+    model = Reply
     fields ='__all__'
     
+
 class AnswerSerializer(serializers.ModelSerializer):
-  serializers.ReadOnlyField(source='user.username')
+  user = UserSerializer()
+  replies = ReplySerializer(many=True, read_only=True)
   class Meta:
     model = Answer
     fields ='__all__'
     
-
-class ReplySerializer(serializers.ModelSerializer):
-  serializers.ReadOnlyField(source='user.username')
+    
+class PostSerializer(serializers.ModelSerializer):
+  author = UserSerializer()
+  answers = AnswerSerializer(many=True,read_only=True)
   class Meta:
-    model = Reply
-    fields ='__all__'
+    model = Post
+    fields = '__all__'
+
+
+
+    
+
+
+    
+
+    
+  
+
+    

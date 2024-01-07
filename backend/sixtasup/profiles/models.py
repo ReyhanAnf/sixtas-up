@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Profile(models.Model):
     nis = models.OneToOneField(User, on_delete=models.CASCADE, to_field='username', primary_key=True, unique=True, related_name='nis')
+    user = models.ForeignKey(User, related_name="user_profile", on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length=50, blank=True)
     kelas = models.CharField(max_length=50, blank=True )
     jurusan = models.CharField(max_length=50, blank=True)

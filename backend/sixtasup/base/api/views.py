@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 
 from .serializers import UserSerializer
-from .permissions import PostPermission, AnswerPermission, ReplyPermission, ProfilePermission
+from .permissions import ProfilePermission
 from posts.serializers import PostSerializer, AnswerSerializer, ReplySerializer
 from posts.models import Post, Answer, Reply
 from profiles.serializers import ProfileSerializer
@@ -50,18 +50,18 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
   serializer_class = ProfileSerializer
   
 class PostViewSet(viewsets.ModelViewSet):
-  permission_classes = [PostPermission, permissions.IsAuthenticatedOrReadOnly]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Post.objects.all()
   serializer_class = PostSerializer
   
   
 class AnswerViewSet(viewsets.ModelViewSet):
-  permission_classes = [AnswerPermission, permissions.IsAuthenticatedOrReadOnly]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
   
 class ReplyViewSet(viewsets.ModelViewSet):
-  permission_classes = [ReplyPermission, permissions.IsAuthenticatedOrReadOnly]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Reply.objects.all()
   serializer_class = ReplySerializer
   
