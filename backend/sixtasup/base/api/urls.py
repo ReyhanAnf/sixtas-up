@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'users', views.UserViewSet, basename='users')
+# router.register(r'users', views.UserViewSet, basename='users')
 #router.register(r'profiles', views.ProfileViewSet, basename='profiles')
 router.register(r'posts', views.PostViewSet, basename='posts')
 router.register(r'answers', views.AnswerViewSet, basename='answers')

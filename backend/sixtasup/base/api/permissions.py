@@ -1,15 +1,19 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
-# class PostPermission(BasePermission):
-#   message = "Tindakan terhadap Postingan hanya dilakukan oleh Pengguna Terautentikasi"
-  
-#   def has_object_permission(self, request, view, obj):
+class PostPermission(BasePermission):
+  message = "Tindakan terhadap Postingan hanya dilakukan oleh Pengguna Terautentikasi"
+
+  def has_object_permission(self, request, view, obj):
     
-#     if request.method in SAFE_METHODS:
-#       return True
-      
-#     return str(obj.user) == str(request.user.username)
+    if request.method in SAFE_METHODS:
+      return True
+    
+    if request.method == "POST":
+      if str(obj.author.username) != str(request.user.username):
+        return False
+    
+    return str(obj.author.username) == str(request.user.username)
     
 
 # class AnswerPermission(BasePermission):
