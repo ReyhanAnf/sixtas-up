@@ -1,25 +1,22 @@
 'use client';
- 
 import { usePathname } from 'next/navigation';
-import data_post from "@/app/lib/postdata";
+import OnePost from '@/app/ui/posts/onePost';
+// import CardPost from '@/app/ui/posts/postCard';
 
-export default function Home() {
+
+export default function Page() {
+
   const path = usePathname();
   const pathpost = path.split('/')[2];
-  
-  function getPost(data: any[], pathpost: string) {
-    const post = data.filter(x => x.post_id == pathpost)[0];
 
-    return post
-  }
-  
-  console.log(data_post)
-  
-  //console.log(getPost(data_post, pathpost))
-  
+
   return (
     <main>
       Halo Gesya - {pathpost}
+
+      <OnePost id={pathpost} />
+
+      {/* <CardPost /> */}
     </main>
   )
 }

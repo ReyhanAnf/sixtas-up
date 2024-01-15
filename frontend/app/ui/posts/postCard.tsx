@@ -1,12 +1,13 @@
-import data_post from "@/app/lib/postdata";
+import getDataPost from "@/app/lib/postdata";
 import getUserProfile from "@/app/lib/userdata";
 import Image from "next/image";
 import Link from 'next/link';
 import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode, Key } from "react";
+import { useParams } from "next/navigation";
 
 
 export default async function CardPost() {
-  const data_post = data_post;
+  const data_post = await getDataPost();
   const data_user = await getUserProfile();
 
   function getUser(data: any[], nis: { first_name: string | number | boolean | ReactPortal | PromiseLikeOfReactNode | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; }, poin: string) {
@@ -17,7 +18,7 @@ export default async function CardPost() {
 
     return propertyValue;
   }
-  
+
 
   return (
     <>
@@ -41,7 +42,7 @@ export default async function CardPost() {
               </div>
             </div>
             <Link className="contain-content rounded-md py-2 px-3 mb-1"
-            href={'/posts/' + post.post_id}>
+              href={'/posts/' + post.post_id}>
               <div className="post-content py-2 px-3">
                 <div className="context">
                   <p className="leading-normal text-gray-900 dark:text-slate-200 text-base md:text-xl mb-1 py-2 text-left">
@@ -99,5 +100,3 @@ export default async function CardPost() {
     </>
   )
 }
-
-export const data_post = await getDataPost();

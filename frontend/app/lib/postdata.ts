@@ -1,9 +1,12 @@
 
-async function getDataPost(){
+export default async function getDataPost(props: { id: string; }){
   const baseUrl = 'http://127.0.0.1:8000/api/';
-  const res_post = await (await fetch(`${baseUrl}posts`, { cache: 'no-store' })).json();
+  let res_post = await (await fetch(`${baseUrl}posts`, { cache: 'no-store' })).json();
   
-  return res_post;
+  if (props.id == "all"){
+    return res_post;
+  }else{
+    res_post = res_post.filter(x => x.post.post_id == props.id);
+    return res_post;
+  }
 }
-
-export default const data_post = await getDataPost()
