@@ -4,3 +4,4 @@ export default async function getUserProfile(){
  
   return res_user;
 }
+

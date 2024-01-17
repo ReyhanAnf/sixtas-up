@@ -41,7 +41,7 @@ class ProfileList(generics.ListAPIView):
   serializer_class = ProfileSerializer
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
-  permission_classes = [ProfilePermission]
+  permission_classes = [permissions.IsAuthenticated,ProfilePermission]
   queryset = Profile.objects.all()
   serializer_class = ProfileSerializer
   
@@ -55,7 +55,7 @@ class PostViewSet(viewsets.ModelViewSet):
   
   
 class AnswerViewSet(viewsets.ModelViewSet):
-  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+  permission_classes = [permissions.IsAuthenticated]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
   
