@@ -55,7 +55,7 @@ class PostViewSet(viewsets.ModelViewSet):
   
   
 class AnswerViewSet(viewsets.ModelViewSet):
-  permission_classes = [permissions.IsAuthenticated]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
   

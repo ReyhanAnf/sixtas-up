@@ -4,14 +4,12 @@ import getAnswer from "@/app/lib/answerdata";
 import Image from "next/image";
 import Link from 'next/link';
 import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode, Key } from "react";
-import { useParams } from "next/navigation";
 
 
 export default async function CardPost() {
   const data_post = await getDataPost();
   const data_user = await getUserProfile();
   const data_answer = await getAnswer();
-  console.log(data_answer);
 
   function getUser(data: any[], nis: { first_name: string | number | boolean | ReactPortal | PromiseLikeOfReactNode | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; }, poin: string) {
     const profile = data.filter(x => x.user.username == nis)[0];

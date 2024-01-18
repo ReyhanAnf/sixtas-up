@@ -6,7 +6,7 @@ import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLik
 
 
 export default async function OnePost(props: { id: string; }) {
-  let data_post = await getDataPost({ id: props.id });
+  let data_post = await getDataPost();
   const data_user = await getUserProfile();
 
 

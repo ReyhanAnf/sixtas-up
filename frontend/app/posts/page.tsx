@@ -1,9 +1,7 @@
-import Navbar from "../ui/navigation/navbar"
 import { Suspense } from "react"
 import CardPost from "../ui/posts/postCard"
-import { useParams } from "next/navigation"
 
-export default function Home() {
+export default function Page() {
   return (
     <div>
       <div className="flex relative min-h-screen flex-col items-center justify-between py-12 px-2">

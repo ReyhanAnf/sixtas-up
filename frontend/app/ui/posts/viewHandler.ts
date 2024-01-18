@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
+// "use client";
+// import { useState } from "react";
 
-export const [listview, setView] = useState();
+// export const [listview, setView] = useState();
 
-export default function viewBtn() {
-  setView("id")
-}
+// export default function viewBtn() {
+//   setView("id")
+// }
