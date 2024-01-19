@@ -1,9 +1,10 @@
 'use client';
 import { FormEvent } from "react"
 import axios from "axios";
-import Cookie from "@/app/lib/context";
+import { useCookies } from "next-client-cookies";
 
 export default function LoginForm() {
+  const cookies = useCookies();
 
   async function onSubmitHandle(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -11,7 +12,9 @@ export default function LoginForm() {
     const formData = new FormData(event.currentTarget)
     const response = await axios.post('http://localhost:8000/api/token/', formData)
       .then(function (response) {
-        console.log(response);
+        cookies.set('accesstoken', response.data.access)
+        cookies.set('refreshtoken', response.data.refresh)
+
       })
       .catch(function (error) {
         console.log(error);
@@ -20,8 +23,6 @@ export default function LoginForm() {
     // Handle response if necessary
     // ...
   }
-
-  Cookie()
 
   return (
     <div className="flex min-h-screen items-center justify-center">

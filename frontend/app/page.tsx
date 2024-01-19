@@ -1,9 +1,10 @@
 'use client';
 
-import CardPost from './ui/posts/postCard';
-import { Suspense } from 'react';
+import { useCookies } from 'next-client-cookies';
 
 export default function Home() {
+  const cookies = useCookies();
+  console.log(cookies.get());
 
   return (
     <div className="flex relative min-h-screen flex-col items-center justify-between py-12 px-2">

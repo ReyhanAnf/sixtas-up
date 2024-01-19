@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { poppins } from '@/app/ui/fonts';
 import Navbar from './ui/navigation/navbar';
+import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,9 +20,9 @@ export default function RootLayout({
         <nav>
           <Navbar />
         </nav>
-        <main>
+        <CookiesProvider>
           {children}
-        </main>
+        </CookiesProvider>
       </body>
     </html>
   )

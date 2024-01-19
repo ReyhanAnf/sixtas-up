@@ -46,14 +46,12 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
   serializer_class = ProfileSerializer
   
   
-  
 class PostViewSet(viewsets.ModelViewSet):
   permission_classes = [PostPermission,permissions.IsAuthenticatedOrReadOnly]
   queryset = Post.objects.all()
   serializer_class = PostSerializer
   
-  
-  
+
 class AnswerViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
