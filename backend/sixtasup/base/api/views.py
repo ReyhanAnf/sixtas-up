@@ -33,7 +33,6 @@ def api_root(request, format=None):
 
 # Create your views here.
 
-  
 
 class ProfileList(generics.ListAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -56,7 +55,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
-  
   
   
 class ReplyViewSet(viewsets.ModelViewSet):

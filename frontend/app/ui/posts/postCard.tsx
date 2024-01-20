@@ -9,7 +9,7 @@ import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLik
 export default async function CardPost() {
   const data_post = await getDataPost();
   const data_user = await getUserProfile();
-  const data_answer = await getAnswer();
+  // const data_answer = await getAnswer();
 
   function getUser(data: any[], nis: { first_name: string | number | boolean | ReactPortal | PromiseLikeOfReactNode | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; }, poin: string) {
     const profile = data.filter(x => x.user.username == nis)[0];
