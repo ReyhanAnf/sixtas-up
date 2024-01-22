@@ -1,8 +1,64 @@
 'use client';
 
-import loginUser from "@/app/lib/authContext";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { FormEvent, useEffect, useState } from "react";
+
 
 export default function LoginForm() {
+  const [change, setChange] = useState('');
+  const [exp, setExp] = useState(0);
+  const [iat, setIat] = useState(0);
+
+  async function submitHandler(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const response = await axios.post(`http://127.0.0.1:8000/api/token/`, formData)
+      .then(function (response) {
+        let token = JSON.parse(JSON.stringify(response.data));
+        let datatoken = JSON.parse(JSON.stringify(jwtDecode(response.data.access?.toString() || '')));
+        setChange(datatoken.jti);
+        setExp(datatoken.exp);
+        setIat(datatoken.iat);
+        localStorage.setItem('accessToken', token.access);
+        localStorage.setItem('refreshToken', token.refresh);
+        localStorage.setItem('userToken', datatoken.user);
+        localStorage.setItem('expiredToken', datatoken.exp);
+        localStorage.setItem('startToken', datatoken.iat);
+      })
+      .catch(function (error) {
+        console.log('error', error);
+      });
+
+    return response;
+  }
+
+  useEffect(() => {
+    if (change != '' && Date.now() >= exp) {
+      const interval = setInterval(() => {
+        const response = axios.post(`http://127.0.0.1:8000/api/token/refresh/`, { refresh: localStorage.getItem('refreshToken') })
+          .then(function (response) {
+            let token = JSON.parse(JSON.stringify(response.data));
+            let datatoken = JSON.parse(JSON.stringify(jwtDecode(response.data.access?.toString() || '')));
+            setChange(datatoken.jti);
+            setExp(datatoken.exp);
+            setIat(datatoken.iat);
+            localStorage.setItem('accessToken', token.access);
+            localStorage.setItem('refreshToken', token.refresh);
+            localStorage.setItem('userToken', datatoken.user);
+            localStorage.setItem('expiredToken', datatoken.exp);
+            localStorage.setItem('startToken', datatoken.iat);
+          })
+          .catch(function (error) {
+            console.log('error', error);
+          });
+        console.log(exp * 1000 - Date.now());
+        clearInterval(interval);
+      }, 5000);
+    }
+  }, [change]);
+
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -13,7 +69,7 @@ export default function LoginForm() {
         <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
           Enter your details to Login.
         </p>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={loginUser}>
+        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={submitHandler}>
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">
               <input

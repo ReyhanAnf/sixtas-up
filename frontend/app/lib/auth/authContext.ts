@@ -1,3 +1,5 @@
+'use client'
+
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { FormEvent, useEffect, useState } from 'react';
@@ -10,14 +12,13 @@ export default async function loginUser(event: FormEvent<HTMLFormElement>) {
   
   const formData = new FormData(event.currentTarget);
   const response = await axios.post(`${baseUrl}token/`, formData)
-    .then(function (response) {
+  .then(function (response) {
       let token = response.data;
       let datatoken = JSON.stringify(jwtDecode(response.data.access?.toString() || ''));
-      
       localStorage.setItem('access', token.access.toString());
       localStorage.setItem('refresh', token.refresh.toString());
       localStorage.setItem('tokendata', datatoken);
-      
+      return {token: token, dataToken: datatoken}
     })
     .catch(function (error) {
       console.log('error',error);
@@ -28,31 +29,7 @@ export default async function loginUser(event: FormEvent<HTMLFormElement>) {
 }
 
 
-export async function refreshToken(){
-  const dataToken = JSON.parse(JSON.stringify(getTokenData()));
-  const tokenRefresh = localStorage.getItem('refresh');
-  const expiredDate = dataToken.exp;
-  const dateNow = new Date().getTime() / 1000;
 
-  if (dateNow >= expiredDate){
-    const response = await axios.post(`${baseUrl}token/refresh/`, {refresh: tokenRefresh})
-    .then(function (response) {
-      let token = response.data;
-      let datatoken = JSON.stringify(jwtDecode(response.data.access?.toString() || ''));
-      
-      localStorage.setItem('access', token.access.toString());
-      localStorage.setItem('refresh', token.refresh.toString());
-      localStorage.setItem('tokendata', datatoken);
-    })
-    .catch(function (error) {
-      console.log('kesalahan token error',error);
-    });
-
-    return response;
-  }else if(dateNow < expiredDate){
-    console.log('masih ada waktu');
-  }
-}
 
 
   export const getTokenData = () => {

@@ -1,8 +1,9 @@
+
 import type { Metadata } from 'next'
 import './globals.css'
 import { poppins } from '@/app/ui/fonts';
 import Navbar from './ui/navigation/navbar';
-import { CookiesProvider } from 'next-client-cookies/server';
+import LoginForm from './ui/auth/login-form';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -10,20 +11,22 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
 
+
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body>
         <nav>
           <Navbar />
         </nav>
-        <CookiesProvider>
+        <main>
           {children}
-        </CookiesProvider>
+          <LoginForm />
+        </main>
       </body>
     </html>
   )
