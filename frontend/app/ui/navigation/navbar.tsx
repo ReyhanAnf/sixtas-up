@@ -5,6 +5,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image';
 import Link from 'next/link';
+import checkAuth from '@/app/lib/auth/checkAuth';
 
 
 export const navigation = [
@@ -20,6 +21,10 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+
+
+  let a = checkAuth();
+  console.log(a);
 
   return (
     <Disclosure as="nav" className="bg-gray-800 bg-opacity-20 backdrop-blur-md fixed w-full z-10">
