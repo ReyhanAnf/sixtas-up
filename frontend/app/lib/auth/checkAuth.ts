@@ -7,9 +7,9 @@ import { useState } from "react";
 
 export default function checkAuth() {
   const user = typeof window !== 'undefined' ? localStorage.getItem('userToken') : null;
-  const exp = Number(localStorage.getItem('expiredToken'));
-  let isValid = false;
-  let resRef = {};
+  const exp = Number(typeof window !== 'undefined' ? localStorage.getItem('expiredToken') : null);
+  let [isValid, setIsValid] = useState(false);
+  let [resRef, setRes] = useState();
 
   // Jika ada histori user maka cek apakah akses token user tersebut valid
   // jika valid maka jalankan fungsi refresh token dan sajikan lagi data nya
@@ -27,16 +27,17 @@ export default function checkAuth() {
       const getChange = async () => {
         const response = await axios.post(`http://127.0.0.1:8000/api/token/refresh/`, { refresh: refreshToken })
           .then(function (response) {
-            let token = response.data;
+            let tokens = response.data;
             let datatoken = JSON.parse(JSON.stringify(jwtDecode(response.data.access?.toString() || '')));
-            localStorage.setItem('accessToken', token.access);
-            localStorage.setItem('refreshToken', token.refresh);
+            localStorage.setItem('accessToken', tokens.access);
+            localStorage.setItem('refreshToken', tokens.refresh);
             localStorage.setItem('userToken', datatoken.user);
             localStorage.setItem('expiredToken', datatoken.exp);
             localStorage.setItem('startToken', datatoken.iat);
             isValid = true;
             console.log('token sudah diperbarui');
-            return { token: token, dataToken: datatoken }
+            setRes(datatoken);
+            return "success valid"
           })
           .catch(function (error) {
             console.log('error', error);

@@ -24,7 +24,6 @@ export default function RootLayout({
         </nav>
         <main>
           {children}
-          <LoginForm />
         </main>
       </body>
     </html>
