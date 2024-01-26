@@ -13,7 +13,6 @@ export default function logoutUser() {
 
   } else {
     // login
-    isValid = false;
     console.log('tidak ada user')
   }
 

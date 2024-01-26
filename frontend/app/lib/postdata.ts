@@ -1,10 +1,5 @@
 
-import axios from 'axios';
-import { cookies } from 'next/headers';
-import { jwtDecode } from "jwt-decode";
-
 export default async function getDataPost(){
-  const baseUrl = 'http://127.0.0.1:8000/api/';
   // const useCookies = cookies();
 
   // const accessToken = useCookies.get('accesstoken')?.value;
@@ -17,7 +12,7 @@ export default async function getDataPost(){
   // console.log(decodejwt);
 
 
-  const res_post = await axios.get(`${baseUrl}posts`)
+  const res_post = await fetch(`${process.env.BASE_URL}posts`)
  
-  return res_post.data;
+  return res_post.json();
 }

@@ -25,7 +25,7 @@ export default function checkAuth() {
       //jika expired
       // cek refresh token
       const getChange = async () => {
-        const response = await axios.post(`http://127.0.0.1:8000/api/token/refresh/`, { refresh: refreshToken })
+        const response = await axios.post(`${process.env.BASE_URL}token/refresh/`, { refresh: refreshToken })
           .then(function (response) {
             let tokens = response.data;
             let datatoken = JSON.parse(JSON.stringify(jwtDecode(response.data.access?.toString() || '')));

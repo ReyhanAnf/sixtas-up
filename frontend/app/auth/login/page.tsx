@@ -1,4 +1,4 @@
-import LoginForm from '../../ui/auth/login-form';
+import LoginForm from '@/app/ui/auth/login-form';
 import Navbar from '@/app/ui/navigation/navbar';
 
 export default function Page() {
