@@ -1,6 +1,10 @@
+'use server';
+import { cookies } from "next/headers";
 
-export default function logoutUser() {
-  const user = typeof window !== 'undefined' ? localStorage.getItem('userToken') : null;
+
+export default async function logoutUser() {
+  const cookie = cookies();
+  const user = cookie.get('userToken');
   // Jika ada histori user maka cek apakah akses token user tersebut valid
   // jika valid maka jalankan fungsi refresh token dan sajikan lagi data nya
   // Jika tidak valid maka cek apakah refresh token juga masih valid
@@ -9,7 +13,11 @@ export default function logoutUser() {
   // Jika tidak ada maka login
   if (user) {
     
-    localStorage.clear();
+    cookie.delete('accessToken');
+    cookie.delete('refreshToken');
+    cookie.delete('userToken');
+    cookie.delete('expiredToken');
+    cookie.delete('startToken');
 
   } else {
     // login

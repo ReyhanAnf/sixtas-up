@@ -2,18 +2,26 @@
 import { FormEvent, useState } from "react";
 import { Input } from "@nextui-org/react";
 import loginUser from "@/app/lib/auth/authLogin";
+import Router from "next/router";
+import { useRouter } from "next/navigation";
 
 
 export default function LoginForm() {
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const LoginHandler = (event: FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    alert(formData.get('username'));
+    const req = {
+      'username': formData.get('username'),
+      'password': formData.get('password')
+    }
+
+    loginUser(req);
   }
 
 
@@ -27,7 +35,7 @@ export default function LoginForm() {
         <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
           Enter your details to Login.
         </p>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" method='post' onSubmit={loginUser}>
+        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" method='post' onSubmit={submitHandler}>
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">
               <Input
@@ -65,6 +73,12 @@ export default function LoginForm() {
             type="submit"
             className="mt-6 block w-full select-none rounded-lg bg-cyan-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-purple-500/20 transition-all hover:shadow-lg hover:shadow-purple-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             data-ripple-light="true"
+            onClick={() => {
+              let inter = setInterval(() => {
+                router.replace('/posts');
+                clearInterval(inter);
+              }, 100);
+            }}
           >
             Sign In
           </button>

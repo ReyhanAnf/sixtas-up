@@ -1,15 +1,12 @@
-'use client';
-
-import axios from "axios";
+'use server';
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
+import { cookies } from "next/headers";
 
 
-export default function checkAuth() {
-  const user = typeof window !== 'undefined' ? localStorage.getItem('userToken') : null;
-  const exp = Number(typeof window !== 'undefined' ? localStorage.getItem('expiredToken') : null);
-  let [isValid, setIsValid] = useState(false);
-  let [resRef, setRes] = useState();
+export default async function checkAuth() {
+  const cookie = cookies();
+  const user = cookie.get("userToken");
+  const exp = Number(cookie.get("expiredToken"));
 
   // Jika ada histori user maka cek apakah akses token user tersebut valid
   // jika valid maka jalankan fungsi refresh token dan sajikan lagi data nya
@@ -18,40 +15,48 @@ export default function checkAuth() {
   //Jika tidak maka kembalika ke halaman login
   // Jika tidak ada maka login
   if (user) {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = cookie.get('refreshToken');
     
     
     if (Date.now()/1000 >= exp) {
       //jika expired
       // cek refresh token
-      const getChange = async () => {
-        const response = await axios.post(`${process.env.BASE_URL}token/refresh/`, { refresh: refreshToken })
-          .then(function (response) {
-            let tokens = response.data;
-            let datatoken = JSON.parse(JSON.stringify(jwtDecode(response.data.access?.toString() || '')));
-            localStorage.setItem('accessToken', tokens.access);
-            localStorage.setItem('refreshToken', tokens.refresh);
-            localStorage.setItem('userToken', datatoken.user);
-            localStorage.setItem('expiredToken', datatoken.exp);
-            localStorage.setItem('startToken', datatoken.iat);
-            isValid = true;
-            console.log('token sudah diperbarui');
-            setRes(datatoken);
-            return "success valid"
-          })
-          .catch(function (error) {
-            console.log('error', error);
-            isValid = false;
-            localStorage.clear();
-            return error.response.data
-          });
-        resRef = response;
+      const req = {
+        'refresh': refreshToken,
       }
-      getChange();
+      const optionsPost = {
+        method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(req),
+                          }
+      
+      const res = await fetch(`${process.env.BASE_URL}token/refresh/`, optionsPost)
+      
+      if (res.ok) {
+        const data = await res.json();
+        const datatoken = JSON.parse(JSON.stringify(jwtDecode(data.access)));
+    
+        cookie.set('accessToken', data.access);
+        cookie.set('refreshToken', data.refresh);
+        cookie.set('userToken', datatoken.user);
+        cookie.set('expiredToken', datatoken.exp);
+        cookie.set('startToken', datatoken.iat);
+        
+      }else{
+        cookie.delete('accessToken');
+        cookie.delete('refreshToken');
+        cookie.delete('userToken');
+        cookie.delete('expiredToken');
+        cookie.delete('startToken');
+      }
+    
+      return res.status
+
     } else {
       // jika tidak expired / valid
       // sajikan data
-      isValid = true;
       console.log('token akses masih aman sampai', exp)
 
     }
@@ -60,11 +65,10 @@ export default function checkAuth() {
 
   } else {
     // login
-    isValid = false;
     console.log('tidak ada user')
   }
 
-  return { 'isValid': isValid, 'response': resRef };
+  return user;
 }
 
 
