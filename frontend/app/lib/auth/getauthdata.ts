@@ -1,20 +1,19 @@
-'use server';
-import { cookies } from "next/headers";
+import axios from "axios";
 
-
-export async function getAuthDataProfile(){
-  const cookie = cookies();
-  const user = cookie.get("userToken");
-  const access = cookie.get("accessToken");
-  const options = {
-    method: 'GET',
+export default async function getAuthDataProfile(){
+  const user = localStorage.getItem('userToken');
+  const access = localStorage.getItem('accessToken');
+  console.log(user);
+  const headers = {
     headers: {
-      'Authorization' : `Bearer ${access}`
-    },
+      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Credentials':true,
+      "Authorization" : `Bearer ${access}`,
+    }
     
   }
 
-  const res_post = await fetch(`${process.env.BASE_URL}profiles/${user}`, options)
+  const res_post = await axios.get(`http://179.169.0.253:8000/api/profiles/${user}`, headers)
  
-  return res_post.json();
+  return res_post.data;
 }

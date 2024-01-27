@@ -1,16 +1,10 @@
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-  reactStrictMode: false
-  // async rewrites() {
-  //     return [
-  //       {
-  //         source: '/api/:path*',
-  //         destination: 'http://127.0.0.1:8000/:path*',
-  //       },
-  //     ]
-  //   }
+module.exports = {
+  async rewrites() {
+      return [
+        {
+          source: '/api/profiles/:path*',
+          destination: 'http://179.169.0.253:8000/api/profiles/:path*',
+        },
+      ]
+    },
 };
-
-module.exports = nextConfig
-

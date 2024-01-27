@@ -12,18 +12,20 @@
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@nextui-org/react": "^2.2.9",
+    "@types/reactjs-localstorage": "^1.0.2",
     "axios": "^1.6.7",
     "cookie": "^0.6.0",
+    "cookies-next": "^4.1.1",
     "cors": "^2.8.5",
     "framer-motion": "^11.0.3",
     "jwt-decode": "^4.0.0",
     "next": "14.0.4",
-    "next-client-cookies": "^1.1.0",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-router": "^6.21.3",
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.21.3",
+    "reactjs-localstorage": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",

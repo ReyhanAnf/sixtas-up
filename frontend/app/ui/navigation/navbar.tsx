@@ -7,22 +7,24 @@ import checkAuth from "@/app/lib/auth/checkAuth";
 import Image from "next/image";
 import Link from "next/link";
 import logoutUser from "@/app/lib/auth/logoutUser";
-import { useCookies } from "next-client-cookies";
-import { getAuthDataProfile } from "@/app/lib/auth/getauthdata";
+import getAuthDataProfile from "@/app/lib/auth/getauthdata";
+import { reactLocalStorage } from 'reactjs-localstorage';
 
 
 export default function NavbarUI() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const cookies = useCookies();
-  checkAuth();
-  let userAuth = cookies.get('userToken');
-  let profileAuth = getAuthDataProfile();
-  console.log(profileAuth);
+  let userAuth = reactLocalStorage.get('userToken');
+  let userAuthProfile = getAuthDataProfile();
+  if (userAuth) {
+    checkAuth();
+  }
 
   const menuItems = [
     { name: "Dashboard", href: "/" },
     { name: "Posts", href: "/posts" },
   ];
+
+  console.log(userAuthProfile);
 
 
   return (

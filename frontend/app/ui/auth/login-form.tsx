@@ -2,7 +2,6 @@
 import { FormEvent, useState } from "react";
 import { Input } from "@nextui-org/react";
 import loginUser from "@/app/lib/auth/authLogin";
-import Router from "next/router";
 import { useRouter } from "next/navigation";
 
 
@@ -16,12 +15,8 @@ export default function LoginForm() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const req = {
-      'username': formData.get('username'),
-      'password': formData.get('password')
-    }
 
-    loginUser(req);
+    loginUser(formData);
   }
 
 

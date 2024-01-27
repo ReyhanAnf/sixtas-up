@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 
 export default async function checkAuth() {
   const cookie = cookies();
-  const user = cookie.get("userToken");
-  const exp = Number(cookie.get("expiredToken"));
+  const user = cookie.get("userToken")?.value;
+  const exp = Number(cookie.get("expiredToken")?.value);
 
   // Jika ada histori user maka cek apakah akses token user tersebut valid
   // jika valid maka jalankan fungsi refresh token dan sajikan lagi data nya
@@ -15,7 +15,8 @@ export default async function checkAuth() {
   //Jika tidak maka kembalika ke halaman login
   // Jika tidak ada maka login
   if (user) {
-    const refreshToken = cookie.get('refreshToken');
+    const refreshToken = cookie.get('refreshToken')?.value;
+    console.log(refreshToken);
     
     
     if (Date.now()/1000 >= exp) {
@@ -23,14 +24,14 @@ export default async function checkAuth() {
       // cek refresh token
       const req = {
         'refresh': refreshToken,
-      }
+      };
       const optionsPost = {
         method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(req),
-                          }
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req),
+      }
       
       const res = await fetch(`${process.env.BASE_URL}token/refresh/`, optionsPost)
       
@@ -38,18 +39,21 @@ export default async function checkAuth() {
         const data = await res.json();
         const datatoken = JSON.parse(JSON.stringify(jwtDecode(data.access)));
     
-        cookie.set('accessToken', data.access);
-        cookie.set('refreshToken', data.refresh);
-        cookie.set('userToken', datatoken.user);
-        cookie.set('expiredToken', datatoken.exp);
-        cookie.set('startToken', datatoken.iat);
+        localStorage.setItem('accessToken', data.access);
+        localStorage.setItem('refreshToken', data.refresh);
+        localStorage.setItem('userToken', datatoken.user);
+        localStorage.setItem('expiredToken', datatoken.exp);
+        localStorage.setItem('startToken', datatoken.iat);
         
-      }else{
-        cookie.delete('accessToken');
-        cookie.delete('refreshToken');
-        cookie.delete('userToken');
-        cookie.delete('expiredToken');
-        cookie.delete('startToken');
+      }else if (res.status >= 400 || res.status < 500){
+        // bad request
+        // cookie.delete('accessToken');
+        // cookie.delete('refreshToken');
+        // cookie.delete('userToken');
+        // cookie.delete('expiredToken');
+        // cookie.delete('startToken');
+        localStorage.clear();
+        console.log('token tidak valid', res.status);
       }
     
       return res.status
