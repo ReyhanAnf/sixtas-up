@@ -1,30 +1,22 @@
-'use client';
-
+'use client'
 import React, { useState } from "react";
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Button, Dropdown, Avatar, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themeSwither";
-import checkAuth from "@/app/lib/auth/checkAuth";
 import Image from "next/image";
 import Link from "next/link";
 import logoutUser from "@/app/lib/auth/logoutUser";
-import getAuthDataProfile from "@/app/lib/auth/getauthdata";
 import { reactLocalStorage } from 'reactjs-localstorage';
 
 
 export default function NavbarUI() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   let userAuth = reactLocalStorage.get('userToken');
-  let userAuthProfile = getAuthDataProfile();
-  if (userAuth) {
-    checkAuth();
-  }
 
   const menuItems = [
     { name: "Dashboard", href: "/" },
     { name: "Posts", href: "/posts" },
   ];
 
-  console.log(userAuthProfile);
 
 
   return (
@@ -51,7 +43,7 @@ export default function NavbarUI() {
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Image
-                  className="rounded-full transition-transform"
+                  className="rounded-sm transition-transform"
                   src="/profile_default.gif"
                   alt="profile logo"
                   width={36}

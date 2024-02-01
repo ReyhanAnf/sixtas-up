@@ -1,13 +1,12 @@
-'use client';
-import { ThemeSwitcher } from "./ui/themeSwither";
+import React from "react";
+import CardPost from "./ui/posts/postCards";
 
 export default function Home() {
-  console.log('aku');
   return (
-    <div className="flex relative min-h-screen flex-col items-center justify-between py-12 px-2">
-      <div className='w-full mt-10 m-0 lg:w-[60%] lg:scale-75'>
-        <ThemeSwitcher />
-      </div>
+    <div className="flex flex-col justify-center px-2 w-full ">
+      <CardPost />
+      <CardPost />
+      <CardPost />
     </div>
-  )
+  );
 }

@@ -19,3 +19,10 @@ export async function getDataProfile(){
  
   return res_post.json();
 }
+
+export async function getAuthDataProfile(){
+
+  const res_post = await fetch(`${process.env.BASE_URL}profiles`, { cache: 'force-cache' })
+ 
+  return res_post.json();
+}
