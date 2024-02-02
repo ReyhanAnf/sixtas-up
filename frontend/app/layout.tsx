@@ -18,10 +18,10 @@ export default function RootLayout({
       <body>
         <NextUIProvider>
           <NextThemesProvider attribute="class" defaultTheme="dark">
-            <nav>
+            <nav className='fixed z-50 w-full '>
               <NavbarUI />
             </nav>
-            <main>
+            <main className='pt-16 sm:px-10'>
               {children}
             </main>
           </NextThemesProvider>

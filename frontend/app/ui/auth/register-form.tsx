@@ -1,14 +1,13 @@
 'use client'
 import { FormEvent, useState } from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Link } from "@nextui-org/react";
 import loginUser from "@/app/lib/auth/authLogin";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
 
 
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
@@ -30,10 +29,10 @@ export default function LoginForm() {
     <div className="flex min-h-screen items-center justify-center flex-col">
       <div className="relative flex flex-col mx-3 rounded-xl bg-slate-600 bg-opacity-25 bg-clip-border text-gray-300 shadow-md p-5">
         <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-gray-500">
-          Sign In
+          Register
         </h4>
         <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
-          Masuk Untuk Gunakan Fitur Lebih Luas!
+          Daftar Untuk Gunakan Fitur Lebih Luas!
         </p>
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" method='post' onSubmit={submitHandler}>
           <div className="mb-4 flex flex-col gap-6">
@@ -44,6 +43,28 @@ export default function LoginForm() {
                 type="text"
                 label="username"
                 name="username"
+                labelPlacement='outside'
+              />
+
+            </div>
+            <div className="relative h-11 w-full min-w-[200px]">
+              <Input
+                key='firstname'
+                variant="bordered"
+                type="text"
+                label="Full Name"
+                name="firstname"
+                labelPlacement='outside'
+              />
+
+            </div>
+            <div className="relative h-11 w-full min-w-[200px]">
+              <Input
+                key='lastname'
+                variant="bordered"
+                type="text"
+                label="Short Name"
+                name="lastname"
                 labelPlacement='outside'
               />
 
@@ -80,6 +101,38 @@ export default function LoginForm() {
               />
 
             </div>
+            <div className="relative h-11 w-full min-w-[200px]">
+              <Input
+                label="confirm password"
+                variant="bordered"
+                placeholder="Enter again your password"
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                    {isVisible ? (
+                      <Image
+                        className="rounded-full fill-gray-900 shadow-xl"
+                        src="/view-dark.svg"
+                        alt="answer button"
+                        width={26}
+                        height={26}
+                      />
+                    ) : (
+                      <Image
+                        className="rounded-full fill-gray-900 shadow-xl"
+                        src="/view-light.svg"
+                        alt="answer button"
+                        width={26}
+                        height={26}
+                      />
+
+                    )}
+                  </button>
+                }
+                type={isVisible ? "text" : "password"}
+                name="repassword"
+              />
+
+            </div>
           </div>
           <button
             type="submit"
@@ -97,15 +150,6 @@ export default function LoginForm() {
 
         </form>
 
-      </div>
-      <div className="flex flex-row items-center justify-between my-1">
-        <p>Belum Punya Akun ??</p>
-        <Link
-          href="/auth/register"
-          className="mx-2 scale-95 bg-cyan-500 rounded-md py-1 px-3 text-slate-800 "
-        >
-          Register
-        </Link>
       </div>
 
 

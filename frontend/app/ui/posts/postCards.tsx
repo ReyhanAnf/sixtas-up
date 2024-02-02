@@ -7,7 +7,7 @@ export default function CardPost() {
   const [isFollowed, setIsFollowed] = React.useState(false);
 
   return (
-    <Card className="max-w-[400px] m-1">
+    <Card className="sm:max-w-[400px] w-full my-1 bg-opacity-50">
       <CardHeader className="flex gap-3 justify-between">
         <div className="flex gap-5">
           <Avatar isBordered radius="full" size="md" src="/profile_default.gif" />
@@ -79,8 +79,12 @@ export default function CardPost() {
           <div className="p-1 border rounded-xl border-slate-500 bg-slate-800 bg-opacity-25 m-1">6 👌</div>
         </div>
         <div className="flex gap-1">
+          <p className="font-semibold text-default-400 text-small">9.1K</p>
+          <p className="text-default-400 text-small">Comments</p>
+        </div>
+        <div className="flex gap-1">
           <p className="font-semibold text-default-400 text-small">97.1K</p>
-          <p className="text-default-400 text-small">Followers</p>
+          <p className="text-default-400 text-small">Likes</p>
         </div>
       </CardFooter>
     </Card>

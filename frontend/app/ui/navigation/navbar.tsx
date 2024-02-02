@@ -30,12 +30,28 @@ export default function NavbarUI() {
         <NavbarContent className="" justify="start">
           <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
           <NavbarBrand>
-            <div className="font-bold text-inherit">SIXTAS-UPP</div>
+            <Link href='/' className="font-bold text-inherit">SIXTAS-UPP</Link>
           </NavbarBrand>
         </NavbarContent>
 
 
         <NavbarContent as="div" justify="end">
+          <NavbarItem className="lg:flex">
+            <button>
+              <Link
+                href='/search'
+              >
+                <Image
+                  className="rounded-sm transition-transform"
+                  src="/search.svg"
+                  alt="profile logo"
+                  width={36}
+                  height={36}
+                  priority
+                />
+              </Link>
+            </button>
+          </NavbarItem>
           <NavbarItem className="lg:flex">
             <ThemeSwitcher />
           </NavbarItem>
@@ -80,9 +96,9 @@ export default function NavbarUI() {
 
         <NavbarMenu className="bg-gray-700 bg-opacity-20 backdrop-blur-lg">
           {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item.name}-${index}`}>
+            <NavbarMenuItem key={`${item.name}-${index}`} className="sm:pl-[15%]">
               <Link
-                className="w-full text-white"
+                className="w-full text-white h-auto"
                 href={item.href}
                 onClick={() => {
                   let inter = setInterval(() => {
