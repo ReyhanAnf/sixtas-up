@@ -30,6 +30,7 @@ class UserRegister(APIView):
             if User.objects.filter(username=username).exists():
               profile = Profile.objects.create(
                 nis = User.objects.filter(username=username).first(),
+                user = User.objects.filter(username=username).first(),
               )
               profile.save()
               return Response(

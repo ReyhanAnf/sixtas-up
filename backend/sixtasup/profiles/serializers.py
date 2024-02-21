@@ -6,4 +6,4 @@ class ProfileSerializer(serializers.ModelSerializer):
   user = UserSerializer(many=False)
   class Meta:
     model = Profile
-    fields = '__all__'
+    fields = ['nis','bio', 'kelas','jurusan', 'subjurusan', 'jenis_kelamin', 'alamat', 'angkatan', 'kontak', 'ttl', 'user']

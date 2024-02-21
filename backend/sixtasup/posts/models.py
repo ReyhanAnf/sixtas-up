@@ -11,6 +11,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to='post-images', blank=True)
     like = models.IntegerField(default=0)
+    tags = models.TextField(default="#shared")
     post_at = models.DateField(auto_now_add=True, editable=False)
     
     def __str__(self):

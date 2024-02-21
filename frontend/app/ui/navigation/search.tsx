@@ -47,9 +47,7 @@ export default function SearchPage() {
       <FilterSearch />
 
 
-      <div>
-        <ResSearch />
-        <ResSearch />
+      <div className="flex flex-col justify-center">
         <ResSearch />
         <ResSearch />
         <ResSearch />

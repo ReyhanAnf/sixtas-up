@@ -15,6 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Sixtas UPP</title>
+      </head>
       <body>
         <NextUIProvider>
           <NextThemesProvider attribute="class" defaultTheme="dark">

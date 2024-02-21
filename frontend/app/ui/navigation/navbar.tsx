@@ -14,7 +14,6 @@ export default function NavbarUI() {
 
   const menuItems = [
     { name: "Dashboard", href: "/" },
-    { name: "Posts", href: "/posts" },
   ];
 
 
@@ -26,36 +25,36 @@ export default function NavbarUI() {
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         isBlurred={true}
+        className="items-center"
       >
         <NavbarContent className="" justify="start">
           <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
           <NavbarBrand>
-            <Link href='/' className="font-bold text-inherit">SIXTAS-UPP</Link>
+            <Link href='/' className="font-bold text-inherit hover:scale-90 transition-all duration-200">SIXTAS-UPP</Link>
           </NavbarBrand>
         </NavbarContent>
 
-
         <NavbarContent as="div" justify="end">
           <NavbarItem className="lg:flex">
-            <button>
+            <button className="hover:scale-90 transition-all duration-200">
               <Link
                 href='/search'
               >
                 <Image
-                  className="rounded-sm transition-transform"
+                  className="rounded-sm transition-transform pt-1"
                   src="/search.svg"
                   alt="profile logo"
-                  width={36}
-                  height={36}
+                  width={34}
+                  height={34}
                   priority
                 />
               </Link>
             </button>
           </NavbarItem>
-          <NavbarItem className="lg:flex">
+          <NavbarItem className="lg:flex hover:scale-90 transition-all duration-200">
             <ThemeSwitcher />
           </NavbarItem>
-          {userAuth ? (
+          {isMenuOpen ? (
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Image
@@ -70,14 +69,11 @@ export default function NavbarUI() {
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="profile" className="h-14 gap-2">
                   <div className="font-semibold">Signed in as</div>
-                  <div className="font-semibold">{userAuth}</div>
+                  <div className="font-semibold">Rey</div>
                 </DropdownItem>
-                <DropdownItem key="settings">My Settings</DropdownItem>
-                <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                <DropdownItem key="analytics">Analytics</DropdownItem>
-                <DropdownItem key="system">System</DropdownItem>
-                <DropdownItem key="configurations">Configurations</DropdownItem>
-                <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                <DropdownItem key="myprofile"><Link href='/profile'>My Profile</Link></DropdownItem>
+                <DropdownItem key="message">Message</DropdownItem>
+                <DropdownItem key="settings">Settings</DropdownItem>
                 <DropdownItem key="logout" color="danger" onClick={() => logoutUser()}>
                   Log Out
                 </DropdownItem>
@@ -85,32 +81,35 @@ export default function NavbarUI() {
             </Dropdown>
           ) : (
             <NavbarItem>
-              <Button as={Link} color="primary" href="/auth/login" variant="flat" className="scale-85">
+              <Button as={Link} color="primary" href="/auth/login" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
                 Sign In
               </Button>
             </NavbarItem>
           )}
 
-
         </NavbarContent>
 
-        <NavbarMenu className="bg-gray-700 bg-opacity-20 backdrop-blur-lg">
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item.name}-${index}`} className="sm:pl-[15%]">
-              <Link
-                className="w-full text-white h-auto"
-                href={item.href}
-                onClick={() => {
-                  let inter = setInterval(() => {
-                    setIsMenuOpen(!isMenuOpen);
-                    clearInterval(inter);
-                  }, 300);
-                }}
-              >
-                {item.name}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+        <NavbarMenu className="flex flex-row flex-wrap px-4 py-2 justify-around h-24">
+          <NavbarMenuItem key={111} className="w-[20%] h-12 text-center py-3">
+            <Button as={Link} color="primary" href="/posts/upload" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
+              U
+            </Button>
+          </NavbarMenuItem>
+          <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
+            <Button as={Link} color="primary" href="/notify" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
+              N
+            </Button>
+          </NavbarMenuItem>
+          <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
+            <Button as={Link} color="primary" href="/posts/my" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
+              M
+            </Button>
+          </NavbarMenuItem>
+          <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
+            <Button as={Link} color="primary" href="/posts/saved" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
+              S
+            </Button>
+          </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
     </div>

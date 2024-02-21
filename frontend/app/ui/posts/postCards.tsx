@@ -1,13 +1,17 @@
 "use client";
 
-import React from "react";
-import { Card, CardHeader, CardBody, CardFooter, Image, Button, Avatar, Divider, Link } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Image, Button, Avatar, Divider } from "@nextui-org/react";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function CardPost() {
-  const [isFollowed, setIsFollowed] = React.useState(false);
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [isStared, setIsStared] = useState(false);
+  const [starCount, setStarCount] = useState(12);
+  const postId = [724, 726];
 
   return (
-    <Card className="sm:max-w-[400px] w-full my-1 bg-opacity-50">
+    <Card className="sm:max-w-[400px] w-full my-1 bg-opacity-50" id={"post-" + postId[0]}>
       <CardHeader className="flex gap-3 justify-between">
         <div className="flex gap-5">
           <Avatar isBordered radius="full" size="md" src="/profile_default.gif" />
@@ -24,12 +28,20 @@ export default function CardPost() {
           variant={isFollowed ? "bordered" : "solid"}
           onPress={() => setIsFollowed(!isFollowed)}
         >
-          {isFollowed ? "Unfollow" : "Follow"}
+          {isFollowed ? "Followed" : "Follow"}
         </Button>
       </CardHeader>
       <Divider />
+
       <CardBody className="p-1">
-        <p>Make beautiful websites regardless of your design experience.</p>
+        <Link className="contain-content text-white"
+          href={'/posts/' + postId[0]}
+        >
+          <div>
+            <p>Make beautiful websites regardless of your design experience.</p>
+          </div>
+        </Link>
+
         <Card
           isFooterBlurred
           radius="lg"
@@ -51,16 +63,28 @@ export default function CardPost() {
                 height={26}
               />
             </button>
-            <button className="answer-view rounded-md px-1 mx-1 flex items-center">
-              <Image
-                className="rounded-full fill-slate-400 shadow-xl"
-                src="/star-dark.svg"
-                alt="answer button"
-                width={26}
-                height={26}
-              />
+            <button className="answer-view rounded-md px-1 mx-1 flex items-center" onClick={() => { setIsStared(!isStared); setStarCount(starCount + 1) }}>
+              {isStared ? (
+                <Image
+                  className="rounded-full fill-slate-400 shadow-xl ring-1"
+                  src="/starf.svg"
+                  alt="liked button"
+                  width={26}
+                  height={26}
+                />
+              ) : (
+                <Image
+                  className="rounded-full fill-slate-400 shadow-xl"
+                  src="/star-dark.svg"
+                  alt="like button"
+                  width={26}
+                  height={26}
+                />
+              )}
             </button>
-            <button className="answer-view rounded-md px-1 mx-1 flex items-center">
+            <Link className="answer-view rounded-md px-1 mx-1 flex items-center"
+              href={'/posts/' + postId[0] + "/answer"}
+            >
               <Image
                 className="rounded-full fill-slate-400 shadow-xl"
                 src="/answer.svg"
@@ -68,7 +92,7 @@ export default function CardPost() {
                 width={30}
                 height={30}
               />
-            </button>
+            </Link>
           </CardFooter>
         </Card>
       </CardBody>
@@ -83,10 +107,11 @@ export default function CardPost() {
           <p className="text-default-400 text-small">Comments</p>
         </div>
         <div className="flex gap-1">
-          <p className="font-semibold text-default-400 text-small">97.1K</p>
-          <p className="text-default-400 text-small">Likes</p>
+          <p className="font-semibold text-default-400 text-small">{starCount}K</p>
+          <p className="text-default-400 text-small">Stars</p>
         </div>
       </CardFooter>
-    </Card>
+
+    </Card >
   );
 }

@@ -15,6 +15,8 @@ from posts.models import Post, Answer, Reply
 from profiles.serializers import ProfileSerializer
 from profiles.models import Profile
 
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 # @api_view(['GET'])
 # def getRoutes(request):
 #   routes = [
@@ -38,6 +40,8 @@ class ProfileList(generics.ListAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Profile.objects.all()
   serializer_class = ProfileSerializer
+  filter_backends = [filters.SearchFilter]
+  search_fields = ['user__username', 'user__first_name']
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
   permission_classes = [permissions.IsAuthenticated,ProfilePermission]
@@ -49,6 +53,9 @@ class PostViewSet(viewsets.ModelViewSet):
   permission_classes = [PostPermission,permissions.IsAuthenticatedOrReadOnly]
   queryset = Post.objects.all()
   serializer_class = PostSerializer
+  filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+  search_fields = ["tags","content"]
+  filterset_fields = ['author']
   
 
 class AnswerViewSet(viewsets.ModelViewSet):
