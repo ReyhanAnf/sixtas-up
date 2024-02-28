@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import CardPost from "../ui/posts/postCard"
+import CardPost from "../ui/posts/postCards"
 
 export default function Page() {
   return (

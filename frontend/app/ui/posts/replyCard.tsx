@@ -1,7 +1,14 @@
+"use client";
+
+import { getOnePost } from "@/app/lib/getdata";
 import { Divider } from "@nextui-org/react";
+import { useParams } from "next/navigation";
 
 
-export default function Reply() {
+export default async function Reply() {
+  const param = useParams();
+  const post = (await getOnePost(param.post.toString())).data;
+
   return (
     <div key="dstgrw3" data-key="dstgrw3">
       <div key="dfaf45" data-key="dfaf45" className="reply-contains">

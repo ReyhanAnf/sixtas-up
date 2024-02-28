@@ -49,15 +49,6 @@ export default function SearchPage() {
 
       <div className="flex flex-col justify-center">
         <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
-        <ResSearch />
       </div>
     </div>
   );

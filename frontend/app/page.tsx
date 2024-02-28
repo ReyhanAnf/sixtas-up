@@ -9,14 +9,6 @@ export default function Home() {
       </div>
       <div className="post-center sm:w-1/3">
         <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
       </div>
       <div className="right sm:w-1/3">
 

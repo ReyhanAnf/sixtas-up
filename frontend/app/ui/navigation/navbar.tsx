@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import React, { useState } from "react";
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Button, Dropdown, Avatar, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themeSwither";
@@ -10,7 +11,7 @@ import { reactLocalStorage } from 'reactjs-localstorage';
 
 export default function NavbarUI() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  let userAuth = reactLocalStorage.get('userToken');
+  // let userAuth = reactLocalStorage.get('userToken');
 
   const menuItems = [
     { name: "Dashboard", href: "/" },

@@ -34,7 +34,12 @@ def api_root(request, format=None):
   
 
 # Create your views here.
-
+class UserList(generics.ListAPIView):
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+  queryset = User.objects.all()
+  serializer_class = UserSerializer
+  filter_backends = [filters.SearchFilter]
+  search_fields = ['username', 'first_name']
 
 class ProfileList(generics.ListAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -44,7 +49,7 @@ class ProfileList(generics.ListAPIView):
   search_fields = ['user__username', 'user__first_name']
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
-  permission_classes = [permissions.IsAuthenticated,ProfilePermission]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly,ProfilePermission]
   queryset = Profile.objects.all()
   serializer_class = ProfileSerializer
   
@@ -62,12 +67,16 @@ class AnswerViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
+  filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+  filterset_fields = ['post']
   
   
 class ReplyViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
   queryset = Reply.objects.all()
   serializer_class = ReplySerializer
+  filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+  filterset_fields = ['answer']
   
 
 # class ProfileViewSet(viewsets.ModelViewSet, mixins.RetrieveModelMixin):

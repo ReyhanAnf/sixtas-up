@@ -1,7 +1,5 @@
 import OnePost from '@/app/ui/posts/onePost';
-import CardPost from '@/app/ui/posts/postCard';
 import { Suspense } from "react"
-
 
 export default function Page() {
   // const path = usePathname();

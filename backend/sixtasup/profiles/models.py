@@ -23,8 +23,8 @@ class Profile(models.Model):
     subjurusan = models.CharField(max_length=10, blank=True)
     jenis_kelamin = models.CharField(max_length=50, blank=True)
     alamat = models.CharField(max_length=200, blank=True)
-    angkatan = models.CharField(max_length=10, blank=True)
-    kontak = models.CharField(max_length=10, blank=True)
+    angkatan = models.CharField(max_length=20, blank=True)
+    kontak = models.CharField(max_length=100, blank=True)
     ttl = models.DateField(blank=True, null=True)
     
     def __str__(self):

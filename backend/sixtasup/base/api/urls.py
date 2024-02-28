@@ -12,6 +12,7 @@ router.register(r'replies', views.ReplyViewSet, basename='replies')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('users/', views.UserList.as_view(), name="users-list"),
     path('profiles/', views.ProfileList.as_view(), name="profiles-list"),
     path('profiles/<str:pk>/', views.ProfileDetail.as_view(), name='profiles-detail'),
 ]
