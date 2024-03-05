@@ -21,6 +21,7 @@ export default async function Answer() {
         <div className="w-full px-3 py-5 flex flex-1 justify-center self-center text-center">Belum Ada Balasan</div>
       )}
       {answers.map((answer: {
+        up: ReactNode;
         replies: any; answer_id: Key | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; user: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; at: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined;
       }) => (
         <div key={answer.answer_id} data-key={answer.answer_id}>
@@ -62,19 +63,9 @@ export default async function Answer() {
                     height={22}
                     priority
                   />
-                  <div>6  </div>
+                  <div>{answer.up}</div>
                 </button>
                 <div className="flex mt-1">
-                  <button className="answer-view rounded-md px-1 mx-1" >
-                    <Image
-                      className="rounded-full"
-                      src="/view-dark.svg"
-                      alt="view button"
-                      width={24}
-                      height={24}
-                      priority
-                    />
-                  </button>
                   <button className="answer-view rounded-xl px-2 py-1 mx-1 text-center bg-gray-700" onClick={() => { setOnReply(!onReply) }}>
                     reply
                   </button>

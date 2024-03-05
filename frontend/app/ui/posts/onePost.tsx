@@ -5,7 +5,7 @@ import Answer from "./answerCard";
 import { Card, CardHeader, CardBody, CardFooter, Button, Avatar, Image, Divider } from "@nextui-org/react";
 import FollowButton, { StaredButton } from "./actionButton";
 import Link from "next/link";
-import { getOnePost } from "@/app/lib/getdata";
+import { getAnswerPost, getOnePost } from "@/app/lib/getdata";
 import { useParams } from "next/navigation";
 
 
@@ -13,6 +13,8 @@ export default async function OnePost() {
 
   const param = useParams();
   const post = (await getOnePost(param.post.toString())).data;
+  const answers = (await getAnswerPost(param.post.toString())).data;
+
 
 
   return (
@@ -110,7 +112,7 @@ export default async function OnePost() {
           <div className="p-1 border rounded-xl border-slate-500 bg-slate-800 bg-opacity-25 m-1">6 👌</div>
         </div>
         <div className="flex gap-1">
-          <p className="font-semibold text-default-400 text-small">9.1K</p>
+          <p className="font-semibold text-default-400 text-small">{answers.length}</p>
           <p className="text-default-400 text-small">Comments</p>
         </div>
         <div className="flex gap-1">

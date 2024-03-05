@@ -2,7 +2,7 @@
 
 import { Card, CardHeader, CardBody, CardFooter, Image, Button, Avatar, Divider } from "@nextui-org/react";
 import Link from "next/link";
-import getDataPost from "@/app/lib/getdata";
+import getDataPost, { getUser } from "@/app/lib/getdata";
 import FollowButton, { StaredButton } from "./actionButton";
 import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode } from "react";
 
@@ -13,7 +13,14 @@ export default async function CardPost() {
   const postId = [724, 726];
 
   let postsData = (await getDataPost()).data;
-  console.log(postsData);
+  const dataUsers = (await getUser("all")).data;
+  function findUsers(nis: any) {
+    let found = dataUsers.find((user: {
+      username: string;
+    }) => user.username === nis);
+
+    return found.first_name
+  }
 
   return (
     <div>
@@ -27,8 +34,8 @@ export default async function CardPost() {
             <div className="flex gap-5">
               <Avatar isBordered radius="full" size="md" src="/profile_default.gif" />
               <div className="flex flex-col gap-1 items-start justify-center">
-                <h4 className="text-small font-semibold leading-none text-default-600">{post.author}</h4>
-                <h5 className="text-small tracking-tight text-default-400">@zoeylang</h5>
+                <h4 className="text-small font-semibold leading-none text-default-600">{findUsers(post.author)}</h4>
+                <h5 className="text-small tracking-tight text-default-400">{post.author}</h5>
               </div>
             </div>
             <FollowButton />
