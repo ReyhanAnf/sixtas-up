@@ -2,27 +2,50 @@
 
 import { Input } from "@nextui-org/react";
 import Image from "next/image";
-import { useState } from "react";
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useRef } from "react";
+import { useEffect, useState } from "react";
+import { getUser } from "@/app/lib/getdata";
+import CardSearch from "./searchprofilecard";
+import { profile } from "console";
+
+export const iProfile = Array();
+export let profiles = Array();
+
+export async function getiProfile() {
+  const getting = (await getUser("all")).data;
+
+  getting.map((profile: any) => {
+    return iProfile.push(profile);
+  })
+}
+
+getiProfile();
 
 export default function InputSearch() {
   const [search, setSearch] = useState('');
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
+  const [data, setData] = useState<any[]>([]);
 
-  function handler(search: string) {
-    const { push } = useRouter();
-    const pathname = usePathname();
-    if (search) {
-      params.set('query', search);
-    } else {
-      params.delete('query');
+  useEffect(() => {
+    const finded = iProfile.find(profile => profile.username.includes(search) || profile.first_name.toLowerCase().includes(search.toLowerCase()));
+    console.log(finded);
+    if (finded) {
+      if (data.includes(finded)) {
+        console.log(data.includes(finded));
+      } else {
+        setData(data => [...data, finded]);
+      }
     }
 
-  }
+    data.map((value, index) => {
+      if (value.username.includes(search) || value.first_name.includes(search)) {
+        console.log(value);
+      } else {
+        data.splice(index, 1);
+      }
+    })
 
-  handler(search);
+  }, [search]);
+
+
 
   return (
     <div>
@@ -64,9 +87,22 @@ export default function InputSearch() {
           />
         }
       />
+      {/* <input
+        value={search}
+        placeholder="gas.."
+        onChange={e => setSearch(e.target.value)}
+      /> */}
 
       <div id="value-search" className="p-3">
-        Hasil : {search}
+        {
+          data.map((profile, index) => (
+            <div key={`s-${index}`}>
+              {profile ? (
+                <CardSearch user={profile} />
+              ) : ("")}
+            </div>
+          ))
+        }
       </div>
     </div>
   )

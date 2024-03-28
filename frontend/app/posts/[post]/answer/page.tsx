@@ -1,3 +1,4 @@
+import SkeletonPage from "@/app/skeleon"
 import WriteAnswer from "@/app/ui/posts/writeAnswer"
 import { Suspense } from "react"
 
@@ -11,7 +12,7 @@ export default function Page() {
     <div>
       <div className="flex relative min-h-screen flex-col items-center justify-between py-12 px-2">
         <div className='w-full m-0 lg:w-[60%] lg:scale-75'>
-          <Suspense fallback={<p className="my-28 flex justify-center items-center">Loading...</p>}>
+          <Suspense fallback={<SkeletonPage />}>
             <WriteAnswer />
           </Suspense>
         </div>

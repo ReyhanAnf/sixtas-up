@@ -1,12 +1,20 @@
-import Image from "next/image"
-import { Button, Divider, Textarea } from "@nextui-org/react"
-import CardPost from "../posts/postCards"
+"use client";
+
+import Image from "next/image";
+import { Button, Divider, Textarea } from "@nextui-org/react";
+import { getDataProfile } from "@/app/lib/getdata";
+import { useParams } from "next/navigation";
+import OtherPosts from "../posts/otherpost";
 
 
-export default function Profile() {
+export default async function Profile() {
+  const param = useParams();
+  const profile = (await getDataProfile(param.id.toString())).data;
+
+
   return (
     <div className="flex flex-col ">
-      <div className="relative flex flex-col items-center rounded-[10px] border-[1px] border-gray-200 w-[400px] mx-auto p-4 bg-slate-200 backdrop-blur-md bg-opacity-10 bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
+      <div className="relative flex flex-col items-center rounded-[10px] border-[1px] border-gray-200 w-[400px] md:w-[600px] mx-auto p-4 bg-slate-200 bg-opacity-10 bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
         <div className="relative flex h-32 w-full justify-center rounded-xl bg-cover">
           <Image
             src="/banner_default.png"
@@ -28,20 +36,20 @@ export default function Profile() {
         </div>
         <div className="mt-16 flex flex-col items-center">
           <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-            Adela Parkson
+            {profile.user.first_name}
           </h4>
-          <h6 className="text-sm font-mono text-gray-600">212210092</h6>
+          <h6 className="text-sm font-mono text-gray-600">{profile.nis}</h6>
           <div className="flex flex-col items-center p-2 my-1">
             <Textarea
               isDisabled
               label=""
               labelPlacement="outside"
               placeholder="Enter your description"
-              defaultValue="lowercase"
+              defaultValue={profile.bio}
               className="w-full font-mono"
             />
-            <p className="text-sm font-mono text-gray-400 my-1">XII IPA 3</p>
-            <p className="text-sm font-mono text-gray-400 my-1">Angkatan 36 / Eternals</p>
+            <p className="text-sm font-mono text-gray-400 my-1">{`${profile.kelas} ${profile.jurusan} ${profile.subjurusan}`}</p>
+            <p className="text-sm font-mono text-gray-400 my-1">Angkatan {profile.angkatan}</p>
           </div>
         </div>
         <div className="mt-6 mb-3 flex gap-14 md:!gap-14">
@@ -64,9 +72,7 @@ export default function Profile() {
         </div>
         <Divider />
         <div className="mypost flex flex-col">
-          <CardPost />
-          <CardPost />
-          <CardPost />
+          <OtherPosts />
         </div>
       </div>
     </div>

@@ -1,23 +1,18 @@
 'use client';
 
 import React, { useState } from "react";
-import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Button, Dropdown, Avatar, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Button, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themeSwither";
 import Image from "next/image";
 import Link from "next/link";
 import logoutUser from "@/app/lib/auth/logoutUser";
-import { reactLocalStorage } from 'reactjs-localstorage';
+import { getCookies } from "cookies-next";
 
 
 export default function NavbarUI() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // let userAuth = reactLocalStorage.get('userToken');
 
-  const menuItems = [
-    { name: "Dashboard", href: "/" },
-  ];
-
-
+  const authCookie = getCookies();
 
   return (
     <div>
@@ -55,7 +50,7 @@ export default function NavbarUI() {
           <NavbarItem className="lg:flex hover:scale-90 transition-all duration-200">
             <ThemeSwitcher />
           </NavbarItem>
-          {isMenuOpen ? (
+          {authCookie.userToken ? (
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Image
@@ -70,9 +65,9 @@ export default function NavbarUI() {
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="profile" className="h-14 gap-2">
                   <div className="font-semibold">Signed in as</div>
-                  <div className="font-semibold">Rey</div>
+                  <div className="font-semibold">{authCookie.userToken}</div>
                 </DropdownItem>
-                <DropdownItem key="myprofile"><Link href='/profile'>My Profile</Link></DropdownItem>
+                <DropdownItem key="myprofile"><Link href='/profile/me'>My Profile</Link></DropdownItem>
                 <DropdownItem key="message">Message</DropdownItem>
                 <DropdownItem key="settings">Settings</DropdownItem>
                 <DropdownItem key="logout" color="danger" onClick={() => logoutUser()}>
@@ -93,22 +88,50 @@ export default function NavbarUI() {
         <NavbarMenu className="flex flex-row flex-wrap px-4 py-2 justify-around h-24">
           <NavbarMenuItem key={111} className="w-[20%] h-12 text-center py-3">
             <Button as={Link} color="primary" href="/posts/upload" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
-              U
+              <Image
+                className="rounded-full fill-slate-400"
+                src="/up-dark.svg"
+                alt="answer button"
+                width={32}
+                height={32}
+                priority
+              />
             </Button>
           </NavbarMenuItem>
           <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
             <Button as={Link} color="primary" href="/notify" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
-              N
-            </Button>
-          </NavbarMenuItem>
-          <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
-            <Button as={Link} color="primary" href="/posts/my" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
-              M
+              <Image
+                className="rounded-full fill-slate-400"
+                src="/notify.svg"
+                alt="answer button"
+                width={32}
+                height={32}
+                priority
+              />
             </Button>
           </NavbarMenuItem>
           <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
             <Button as={Link} color="primary" href="/posts/saved" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
-              S
+              <Image
+                className="rounded-full fill-slate-400"
+                src="/saved.svg"
+                alt="answer button"
+                width={32}
+                height={32}
+                priority
+              />
+            </Button>
+          </NavbarMenuItem>
+          <NavbarMenuItem key={111} className="w-[20%] h-12 py-3">
+            <Button as={Link} color="primary" href="/learn/kimia" variant="flat" className="hover:scale-90 scale-85 transition-all duration-200">
+              <Image
+                className="rounded-full fill-slate-400"
+                src="/kimia.svg"
+                alt="kimia button"
+                width={32}
+                height={32}
+                priority
+              />
             </Button>
           </NavbarMenuItem>
         </NavbarMenu>

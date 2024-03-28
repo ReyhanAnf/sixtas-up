@@ -1,50 +1,39 @@
-// 'use server';
-
+'use server';
+import axios from "axios";
+import { BASE_URL } from "../url";
 import { jwtDecode } from 'jwt-decode';
-// import { cookies } from 'next/headers';
-
-
-// export default async function loginUser(event: FormEvent<HTMLFormElement>) {
-//   event.preventDefault();
-
-//   const formData = new FormData(event.currentTarget);
-//   console.log(formData)
-// }
-
+import { cookies } from "next/headers";
 
 export default async function loginUser(dataform: FormData) {
+  const cookie = cookies();
   const req = {
     'username': dataform.get('username'),
     'password': dataform.get('password'),
   };
-  const optionsPost = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(req),
-  }
   
-  const res = await fetch(`http://179.169.0.253:8000/api/token/`, optionsPost);
-  
-  if (res.ok) {
-    // const cookie = cookies();
-    const data = await res.json();
+  const res = await axios.post(`${BASE_URL}/token/`, req)
+  .then((response)=>{
+    const data = response.data;
     const datatoken = JSON.parse(JSON.stringify(jwtDecode(data.access)));
 
-    console.log(data)
-
-    localStorage.setItem('accessToken', data.access);
-    localStorage.setItem('refreshToken', data.refresh);
-    localStorage.setItem('userToken', datatoken.user);
-    localStorage.setItem('expiredToken', datatoken.exp);
-    localStorage.setItem('startToken', datatoken.iat);
+    cookie.set('accessToken', data.access);
+    cookie.set('refreshToken', data.refresh);
+    cookie.set('userToken', datatoken.user);
+    cookie.set('expiredToken', datatoken.exp);
+    cookie.set('startToken', datatoken.iat);
+    cookie.set('statusAuth', '200');
+    cookie.set('messageAuth','Sukses Login');
     
-  }else{
-    localStorage.clear();
-    console.log('masih pake yang lama');
-  }
-
-  return res.status
+  })
+  .catch((error)=>{
+    cookie.delete('accessToken');
+    cookie.delete('refreshToken');
+    cookie.delete('userToken');
+    cookie.delete('expiredToken');
+    cookie.delete('startToken');
+    cookie.set('statusAuth', "401");
+    cookie.set('messageAuth','Username atau Kata sandi salah');
+  });
+  
 }
 

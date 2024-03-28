@@ -1,12 +1,18 @@
+'use client';
+
 import Image from "next/image";
 import { Button, Divider, Textarea } from "@nextui-org/react";
-import CardPost from "../posts/postCards";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import getAuthDataProfile from "@/app/lib/auth/getauthdata";
+import { getMyPost } from "@/app/lib/getdata";
+import MyPosts from "../posts/mypost";
 
 
-export default function MyProfile() {
+export default async function MyProfile() {
   const pathname = usePathname();
+  const myprofiledata = (await getAuthDataProfile()).data;
+
   return (
     <div className="flex flex-col ">
       <div className="relative flex flex-col items-center rounded-[10px] border-[1px] border-gray-200 w-[400px] mx-auto p-4 bg-slate-200 backdrop-blur-md bg-opacity-10 bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
@@ -31,23 +37,23 @@ export default function MyProfile() {
         </div>
         <div className="mt-16 flex flex-col items-center">
           <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-            Adela Parkson
+            {myprofiledata.user.first_name}
           </h4>
-          <h6 className="text-xl font-bold text-navy-700 dark:text-white">
-            Adel
-          </h6>
-          <h6 className="text-sm font-mono text-gray-600">212210092</h6>
+          {/* <h6 className="text-xl font-bold text-navy-700 dark:text-white">
+            {myprofiledata.user}
+          </h6> */}
+          <h6 className="text-sm font-mono text-gray-600">{myprofiledata.user.username}</h6>
           <div className="flex flex-col items-center p-2 my-1">
             <Textarea
               isDisabled
               label=""
               labelPlacement="outside"
               placeholder="Enter your description"
-              defaultValue="lowercase"
+              defaultValue={myprofiledata.bio}
               className="w-full font-mono"
             />
-            <p className="text-sm font-mono text-gray-400 my-1">XII IPA 3</p>
-            <p className="text-sm font-mono text-gray-400 my-1">Angkatan 36 / Eternals</p>
+            <p className="text-sm font-mono text-gray-400 my-1">{`${myprofiledata.kelas} ${myprofiledata.jurusan} ${myprofiledata.subjurusan}`}</p>
+            <p className="text-sm font-mono text-gray-400 my-1">Angkatan {myprofiledata.angkatan}</p>
           </div>
         </div>
         <div className="mt-6 mb-3 flex gap-14 md:!gap-14">
@@ -72,9 +78,8 @@ export default function MyProfile() {
         </div>
         <Divider />
         <div className="mypost flex flex-col">
-          <CardPost />
-          <CardPost />
-          <CardPost />
+          <h2 className="w-full text-center text-emerald-500 text-xl py-2">My Posts</h2>
+          <MyPosts />
         </div>
       </div>
     </div>

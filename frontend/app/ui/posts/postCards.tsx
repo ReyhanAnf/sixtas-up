@@ -1,19 +1,18 @@
-
-
 import { Card, CardHeader, CardBody, CardFooter, Image, Button, Avatar, Divider } from "@nextui-org/react";
 import Link from "next/link";
 import getDataPost, { getUser } from "@/app/lib/getdata";
-import FollowButton, { StaredButton } from "./actionButton";
+import { StaredButton } from "./actionButton";
 import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode } from "react";
+import SaveButton from "./actionButton";
+import { cookies } from "next/headers";
 
 export default async function CardPost() {
-  // const [isFollowed, setIsFollowed] = useState(false);
-  // const [isStared, setIsStared] = useState(false);
-  const starCount = 12;
-  const postId = [724, 726];
 
   let postsData = (await getDataPost()).data;
   const dataUsers = (await getUser("all")).data;
+  let cookie = cookies();
+  let userA = cookie.get("userToken")?.value;
+
   function findUsers(nis: any) {
     let found = dataUsers.find((user: {
       username: string;
@@ -22,12 +21,15 @@ export default async function CardPost() {
     return found.first_name
   }
 
+
   return (
     <div>
       {postsData.map((post: {
+        likes: any;
+        tags: ReactNode;
         answers: any;
         image: any;
-        like: ReactNode; post_id: string; author: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; post_at: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined;
+        post_id: string; author: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; post_at: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined;
       }) => (
         <Card className="sm:max-w-[400px] w-full my-1 bg-opacity-50" id={"post-" + post.post_id} >
           <CardHeader className="flex gap-3 justify-between">
@@ -38,7 +40,7 @@ export default async function CardPost() {
                 <h5 className="text-small tracking-tight text-default-400">{post.author}</h5>
               </div>
             </div>
-            <FollowButton />
+            <SaveButton />
           </CardHeader>
           <Divider />
 
@@ -47,7 +49,7 @@ export default async function CardPost() {
               href={'/posts/' + post.post_id}
             >
               <div>
-                <p>{post.content}</p>
+                <div className="whitespace-pre-line dark:text-white text-slate-900">{post.content}</div>
               </div>
             </Link>
 
@@ -64,7 +66,7 @@ export default async function CardPost() {
                     alt="Woman listing to music"
                     className="object-cover"
                     height={200}
-                    src="/hero-card.jpeg"
+                    src={post.image}
                   />
                   <CardFooter className="justify-end before:bg-white/30 border-white/30 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small z-10">
                     <button className="answer-view rounded-md px-1 mx-1 flex items-center">
@@ -76,7 +78,7 @@ export default async function CardPost() {
                         height={26}
                       />
                     </button>
-                    <StaredButton />
+                    <StaredButton idpost={post.post_id} userA={userA} realLike={post.likes} />
                     <Link className="answer-view rounded-md px-1 mx-1 flex items-center"
                       href={'/posts/' + post.post_id + "/answer"}
                     >
@@ -94,7 +96,7 @@ export default async function CardPost() {
               )
                 : (
                   <div className="flex flex-row mt-5 justify-end rounded-none bg-transparent">
-                    <StaredButton />
+                    <StaredButton idpost={post.post_id} userA={userA} realLike={post.likes} />
                     <Link className="answer-view rounded-md px-1 mx-1 flex items-center"
                       href={'/posts/' + post.post_id + "/answer"}
                     >
@@ -113,7 +115,7 @@ export default async function CardPost() {
           <Divider />
           <CardFooter className="flex justify-between">
             <div className="answer-meta text-sm my-1 flex justify-between">
-              <div className="p-1 border rounded-xl border-slate-500 bg-slate-800 bg-opacity-25 m-1">3 😂</div>
+              <div className="p-1 border rounded-xl border-slate-500 bg-cyan-800 bg-opacity-25 m-1">{post.tags}</div>
               <div className="p-1 border rounded-xl border-slate-500 bg-slate-800 bg-opacity-25 m-1">6 👌</div>
             </div>
             <div className="flex gap-1">
@@ -121,7 +123,7 @@ export default async function CardPost() {
               <p className="text-default-400 text-small">Comments</p>
             </div>
             <div className="flex gap-1">
-              <p className="font-semibold text-default-400 text-small">{post.like}</p>
+              <p className="font-semibold text-default-400 text-small">{post.likes.length}</p>
               <p className="text-default-400 text-small">Stars</p>
             </div>
           </CardFooter>

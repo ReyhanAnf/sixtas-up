@@ -1,15 +1,17 @@
 'use client'
-import { FormEvent, useState } from "react";
-import { Button, Input, Link } from "@nextui-org/react";
-import loginUser from "@/app/lib/auth/authLogin";
+import { FormEvent, useEffect, useState } from "react";
+import { Input } from "@nextui-org/react";
+import registerUser from "@/app/lib/auth/authRegister";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
+import { getCookies } from "cookies-next";
 
 
 
 export default function RegisterForm() {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
+  const rout = useRouter();
+  const authCookie = getCookies();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -18,11 +20,12 @@ export default function RegisterForm() {
 
     const formData = new FormData(event.currentTarget);
 
-    alert(formData.get('username'));
+    registerUser(formData);
   }
 
-
-
+  useEffect(() => {
+    authCookie.registerStatus?.replace('%20', '  ').replace('%3A', ':') == "Sukses:Selamat-Datang!Login-Sekarang!" ? rout.push('/auth/login') : "";
+  }, [submitHandler])
 
 
   return (
@@ -31,9 +34,17 @@ export default function RegisterForm() {
         <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-gray-500">
           Register
         </h4>
-        <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
-          Daftar Untuk Gunakan Fitur Lebih Luas!
-        </p>
+        {
+          authCookie.registerStatus != undefined ? (
+            <p className="mt-1 block font-sans text-sm font-bold leading-relaxed text-orange-500 antialiased">
+              {authCookie.registerStatus.replace('%20', '  ').replace('%3A', ':')}
+            </p>
+          ) : (
+            <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
+              Daftar Untuk Gunakan Fitur Lebih Luas!
+            </p>
+          )
+        }
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" method='post' onSubmit={submitHandler}>
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">
@@ -49,22 +60,22 @@ export default function RegisterForm() {
             </div>
             <div className="relative h-11 w-full min-w-[200px]">
               <Input
-                key='firstname'
+                key='fullname'
                 variant="bordered"
                 type="text"
                 label="Full Name"
-                name="firstname"
+                name="fullname"
                 labelPlacement='outside'
               />
 
             </div>
             <div className="relative h-11 w-full min-w-[200px]">
               <Input
-                key='lastname'
+                key='shortname'
                 variant="bordered"
                 type="text"
                 label="Short Name"
-                name="lastname"
+                name="shortname"
                 labelPlacement='outside'
               />
 
@@ -129,7 +140,7 @@ export default function RegisterForm() {
                   </button>
                 }
                 type={isVisible ? "text" : "password"}
-                name="repassword"
+                name="re_password"
               />
 
             </div>
@@ -138,14 +149,8 @@ export default function RegisterForm() {
             type="submit"
             className="mt-6 block w-full select-none rounded-lg bg-cyan-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white hover:scale-105 transition-all hover:shadow-lg focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             data-ripple-light="true"
-            onClick={() => {
-              let inter = setInterval(() => {
-                router.replace('/');
-                clearInterval(inter);
-              }, 100);
-            }}
           >
-            Sign In
+            Register
           </button>
 
         </form>
@@ -154,10 +159,7 @@ export default function RegisterForm() {
 
 
 
-    </div>
+    </div >
   )
 }
 
-function dispatch(arg0: { type: string; value: any; }) {
-  throw new Error("Function not implemented.");
-}

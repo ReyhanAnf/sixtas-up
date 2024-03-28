@@ -1,11 +1,9 @@
 import axios from "axios";
-
-export const BASE_URL = "http://127.0.0.1:8000/api";
-
+import { BASE_URL } from "./url";
 
 
 export default async function getDataPost(){
-  const res_post = await axios.get(`${BASE_URL}/posts`)
+  const res_post = await axios.get(`${BASE_URL}/posts/?ordering=-post_at`)
   return res_post;
 }
 
@@ -14,6 +12,12 @@ export async function getOnePost(id: string){
   const res_post = await axios.get(`${BASE_URL}/posts/${id}/`);
   return res_post;
 }
+
+export async function getMyPost(id: string){
+  const res_post = await axios.get(`${BASE_URL}/posts/?author=${id}`);
+  return res_post;
+}
+
 
 
 export async function getAnswerPost(postId: string){
@@ -33,7 +37,7 @@ export async function getDataProfile(search: string){
     const res_post = await axios.get(`${BASE_URL}/profiles/`);
     return res_post;
   }else if(search){
-    const res_post = await axios.get(`${BASE_URL}/profiles/?search=${search}`);
+    const res_post = await axios.get(`${BASE_URL}/profiles/${search}/`);
     return res_post;
   }else{
     const res_post = await axios.get(`${BASE_URL}/profiles/`);

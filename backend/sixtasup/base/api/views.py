@@ -9,14 +9,16 @@ from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 
 from .serializers import UserSerializer
-from .permissions import ProfilePermission, PostPermission
-from posts.serializers import PostSerializer, AnswerSerializer, ReplySerializer
+from .permissions import ProfilePermission, PostPermission, UserPermission
+from posts.serializers import PostSerializer, AnswerSerializer, ReplySerializer, LikePostSerializer
 from posts.models import Post, Answer, Reply
 from profiles.serializers import ProfileSerializer
 from profiles.models import Profile
 
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+
+
 # @api_view(['GET'])
 # def getRoutes(request):
 #   routes = [
@@ -40,6 +42,11 @@ class UserList(generics.ListAPIView):
   serializer_class = UserSerializer
   filter_backends = [filters.SearchFilter]
   search_fields = ['username', 'first_name']
+  
+class UserDetail(generics.RetrieveUpdateAPIView):
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly, UserPermission]
+  queryset = User.objects.all()
+  serializer_class = UserSerializer
 
 class ProfileList(generics.ListAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -58,9 +65,15 @@ class PostViewSet(viewsets.ModelViewSet):
   permission_classes = [PostPermission,permissions.IsAuthenticatedOrReadOnly]
   queryset = Post.objects.all()
   serializer_class = PostSerializer
-  filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+  filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+  ordering_fields = ["post_at"]
   search_fields = ["tags","content"]
   filterset_fields = ['author']
+  
+class LikeViewSet(viewsets.ModelViewSet):
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+  queryset = Post.objects.all()
+  serializer_class = LikePostSerializer
   
 
 class AnswerViewSet(viewsets.ModelViewSet):
@@ -78,6 +91,8 @@ class ReplyViewSet(viewsets.ModelViewSet):
   filter_backends = [filters.SearchFilter, DjangoFilterBackend]
   filterset_fields = ['answer']
   
+
+
 
 # class ProfileViewSet(viewsets.ModelViewSet, mixins.RetrieveModelMixin):
 #   #authentication_classes = [SessionAuthentication, BasicAuthentication]

@@ -1,8 +1,5 @@
-"use client";
-
 import InputSearch from "./input";
 import FilterSearch from "./filter-search";
-import ResSearch from "./output-search";
 
 export default function SearchPage() {
   return (
@@ -11,9 +8,6 @@ export default function SearchPage() {
       <FilterSearch />
       <div>
         cari :
-      </div>
-      <div className="flex flex-col justify-center">
-        <ResSearch />
       </div>
     </div>
   );

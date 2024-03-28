@@ -1,70 +1,82 @@
 "use client";
 
-import { useState } from "react";
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Textarea, Image } from "@nextui-org/react";
+import { Input, Image, Textarea } from "@nextui-org/react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { FormEvent } from "react";
+import uploadPost from "@/app/lib/posts/uploadpost";
+import { useRouter } from "next/navigation";
 
 export default function UploadPost() {
-  const [value, setValue] = useState("");
-  const params = useParams();
+  const rout = useRouter();
+
+  const submitHandler = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    uploadPost(formData);
+    alert("success!✅");
+    rout.back();
+  }
 
   return (
-    <Card className="h-full w-full my-1 px-3 py-2">
-      <CardHeader className="flex gap-3 justify-between">
-        <Link className="answer-view rounded-md px-1 mx-1 flex items-center"
-          href={'/'}
-        >
-          Kembali
-        </Link>
-      </CardHeader>
-      <Divider />
-      <CardBody className="p-1">
-        <Textarea
-          key="input-underlined"
-          variant="bordered"
-          label="Answer Post"
-          labelPlacement="outside"
-          placeholder="Enter your ask"
-          className="col-span-12 md:col-span-6 mb-6 md:mb-0"
-          value={value}
-          onValueChange={setValue}
-        />
-        <Button
-          className="bg-transparent text-foreground border-default-200"
-          color="primary"
-          radius="full"
-          size="sm"
-          variant="bordered"
-          onPress={() => alert("gambar di upload")}
-        >
-          Upload Gambar
-        </Button>
-        <Card
-          isFooterBlurred
-          radius="lg"
-          className="border-none my-2"
-        >
+    <div className="flex min-h-screen items-center justify-center flex-col dark:text-white text-slate-900">
+      <div className="relative flex flex-col mx-3 rounded-xl bg-slate-600 bg-opacity-25 bg-clip-border text-gray-300 shadow-md p-5">
+        <Link href={'/'}>
           <Image
-            alt="Woman listing to music"
-            className="object-fill object-center"
-            height={300}
-            src="/hero-card.jpeg"
+            className="rounded-full fill-slate-400 shadow-xl"
+            src="/back.svg"
+            alt="back button"
+            width={30}
+            height={30}
           />
-        </Card>
-      </CardBody>
-      <CardFooter className="justify-end before:bg-white/30 border-white/30 border-1 overflow-hidden py-1 before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small z-10">
-        <Button
-          className="bg-transparent text-foreground border-default-200"
-          color="primary"
-          radius="lg"
-          size="md"
-          variant="bordered"
-          onPress={() => { }}
-        >
-          Kirim
-        </Button>
-      </CardFooter>
-    </Card >
+        </Link>
+        <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-gray-500">
+          Posting
+        </h4>
+        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" method='post' onSubmit={submitHandler}>
+          <div className="mb-4 flex flex-col gap-6">
+            <div className=" h-11 mb-5 w-full min-w-[200px]">
+              <Textarea
+                key='content'
+                variant="bordered"
+                type="textarea"
+                label="what's do you think?"
+                name="content"
+                labelPlacement='outside'
+              />
+            </div>
+            <div className="h-11 mt-8 w-full min-w-[200px]">
+              <input
+                type="file"
+                name="image"
+                key={"image"}
+              />
+
+            </div>
+            <div className=" h-11 w-full min-w-[200px]">
+              <Input
+                key='tag'
+                variant="bordered"
+                type="text"
+                label="Tag"
+                name="tag"
+                labelPlacement='outside'
+                placeholder="#belajar #share #ask ..."
+              />
+
+            </div>
+
+          </div>
+          <button
+            type="submit"
+            className="mt-6 block w-full select-none rounded-lg bg-cyan-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white hover:scale-105 transition-all hover:shadow-lg focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true"
+          >
+            Post
+          </button>
+        </form>
+      </div>
+    </div >
   );
 }

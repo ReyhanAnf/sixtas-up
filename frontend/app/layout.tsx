@@ -1,7 +1,7 @@
 'use client'
 
-import './globals.css'
-import { poppins } from '@/app/ui/fonts';
+import './globals.css';
+import checkAuth from './lib/auth/checkAuth';
 import NavbarUI from './ui/navigation/navbar';
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -13,6 +13,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  checkAuth();
   return (
     <html lang="en">
       <head>

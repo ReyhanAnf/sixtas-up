@@ -7,5 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = User
-    fields = ['username', 'first_name', 'profile']
+    fields = ['username', 'first_name', 'last_name','email', 'profile', 'is_active']
   
+  def update(self,instance , validated):
+    instance.first_name = validated.get('first_name', instance.first_name)
+    instance.last_name = validated.get('last_name', instance.last_name)
+    instance.email = validated.get('email', instance.email)
+    instance.save()
+    return instance

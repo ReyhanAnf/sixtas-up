@@ -1,17 +1,11 @@
 import SearchPage from "../ui/navigation/search";
-import ResSearch from "../ui/navigation/output-search";
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams: { query: string };
-}) {
-  console.log(searchParams);
-
+export default function Page() {
   return (
     <div className="w-full h-screen">
       <SearchPage />
-      <ResSearch />
+      <div className="flex flex-col justify-center">
+      </div>
     </div>
   )
 }

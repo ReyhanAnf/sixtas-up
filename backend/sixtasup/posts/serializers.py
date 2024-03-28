@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from .models import Post, Answer, Reply
-from base.api.serializers import UserSerializer
-from django.contrib.auth.models import User
 
+class LikePostSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Post
+    fields = ["likes", "post_id"]
 
 class ReplySerializer(serializers.ModelSerializer):
   class Meta:
@@ -19,15 +21,21 @@ class AnswerSerializer(serializers.ModelSerializer):
     
 class PostSerializer(serializers.ModelSerializer):
   answers = AnswerSerializer(many=True,read_only=True)
+  # likes = LikePostSerializer(many=True, read_only=True)
+  
   class Meta:
     model = Post
     fields = '__all__'
     
+    
 
     
 
 
     
+
+    
+
 
     
   

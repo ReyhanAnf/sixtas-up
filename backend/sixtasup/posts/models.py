@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from profiles.models import Profile
 # Create your models here.
 import uuid
 
@@ -10,9 +11,10 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name="post_user", on_delete=models.CASCADE, null=True, to_field="username", db_column="username")
     content = models.TextField()
     image = models.ImageField(upload_to='post-images', blank=True)
-    like = models.IntegerField(default=0)
     tags = models.TextField(default="#shared")
     post_at = models.DateField(auto_now_add=True, editable=False)
+    likes = models.ManyToManyField(Profile, related_name='likes', db_column="nis", blank=True)
+    
     
     def __str__(self):
         return str(self.post_id)
@@ -49,3 +51,9 @@ class Subject(models.Model):
     
     def __str__(self):
         return str(self.subject_id)
+    
+
+# class LikePost(models.Model):
+#     id = models.AutoField(primary_key=True, editable=False)
+#     user = models.ManyToManyField(User, related_name='like_user')
+#     post = models.ManyToManyField(Post, related_name='likes')
